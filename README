@@ -1,0 +1,51 @@
+Commit Syntax Checker
+------------------------
+
+This tool helps to check the syntax of the commit title and the commit description.
+By following the guidelines provided by the checker, the commit is easier to
+understand and becomes more readable.
+
+Here are the rules constructed by the syntax checker script:
+
+1. The length of commit title must be maximum 55 characters long.
+   If the commit is a revert commit, then the maximum length is
+   adjusted accordingly.
+
+2. The commit title must contain at least 3 words separated by space.
+   The commit tag is included in these 3 words.
+   For instance: 'ci: Fix everything' is a valid commit title.
+
+3. The commit title must not end with punctoation marks.
+   This includes: (.?!)
+
+4. The second line of the commit message must be an empty line.
+
+5. The length of commit description lines must be
+   maximum 65 characters long each.
+
+If you wish to test the script manually:
+- The check_message_syntax.py script has 2 parameters:
+  --message (REQUIRED) (string - base64 encoded format)
+  --debug (OPTIONAL)
+
+  The message parameter must be in base64 encoded format because the script
+  was created to work with Gerrit and Jenkins.
+
+- example usage:
+'''test: This is a test title
+
+This is a test description'''
+
+  The commit message above in base64 encoded format:
+  dGVzdDogVGhpcyBpcyBhIHRlc3QgdGl0bGUKClRoaXMgaXMgYSB0ZXN0IGRlc2NyaXB0aW9uCg==
+
+  ./check_message_syntax --message 'dGVzdDogVGhpcyBpcyBhIHRlc3QgdGl0bGUKClRoaXMgaXMgYSB0ZXN0IGRlc2NyaXB0aW9uCg'
+
+  If you wish you can turn on the debugger mode, in which case:
+  ./check_message_syntax --message 'dGVzdDogVGhpcyBpcyBhIHRlc3QgdGl0bGUKClRoaXMgaXMgYSB0ZXN0IGRlc2NyaXB0aW9uCg'
+  --debug
+
+The commit syntax checker has its own unittests which you can run (requires pytest module):
+python3 -m pytest -v
+
+The script uses Python3. (was created with 3.5.2 version)
